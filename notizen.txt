@@ -1,0 +1,20 @@
+SONAR
+While contextual models dominate performance benchmarks, static embeddings offer unique advantages for dimensional analysis.
+BGE-M3 (superior performance)
+ConceptNet Numberbatch 19.08 (static embeddings)
+
+FastText's 44-language aligned vectors
+
+pecialized geometric analysis frameworks. GeoMM (Geometry-aware Multilingual Embeddings) 
+
+vec2vec framework (lesen und zitieren)
+MMTEB (Massive Multilingual Text Embedding Benchmark) (lesen und zitieren)
+LINSPECTOR (lesen und zitieren)
+LDSP-10 (lesen und zitieren)
+
+Apple's Embedding Atlas (für Visualisierung)
+TensorFlow's Embedding Projector (for exploration)
+Jina Embeddings v3: atryoshka Representation Learning for embedding truncation
+
+ConceptNet Embeddings Zitieren:
+Robyn Speer, Joshua Chin, and Catherine Havasi (2017). "ConceptNet 5.5: An Open Multilingual Graph of General Knowledge." In proceedings of AAAI 2017.
