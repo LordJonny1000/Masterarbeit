@@ -71,21 +71,3 @@ python src/cli.py analyze --data-file data/processed/embeddings.h5 \
 python src/cli.py analyze --data-file data/processed/embeddings.h5 \
     --concepts dog cat elephant --consistency
 ```
-
-## Typische Workflows
-
-```bash
-# Initial Setup
-python src/cli.py extract --batch --cache-dir data/cache
-python src/cli.py manage --data-file data/processed/embeddings.h5 --stats
-
-# Vollständige Analyse
-python src/cli.py analyze --data-file data/processed/embeddings.h5 \
-    --consistency --language-similarity --report \
-    --output-dir data/results/$(date +%Y%m%d)
-
-# Inkrementeller Aufbau
-python src/cli.py extract --word-file data/animals.txt --batch --append
-python src/cli.py extract --word-file data/objects.txt --batch --append
-python src/cli.py extract --word-file data/emotions.txt --batch --append
-```
