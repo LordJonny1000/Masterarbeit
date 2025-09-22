@@ -1,4 +1,4 @@
 data/
 notizen.txt
 literatur/
-src/__pycache__/
+src/__pycache__/*
