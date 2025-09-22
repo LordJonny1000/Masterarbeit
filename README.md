@@ -68,6 +68,5 @@ python src/cli.py analyze --data-file data/processed/embeddings.h5 \
     --report --visualize --output-dir data/results
 
 # Nur bestimmte Konzepte analysieren
-python src/cli.py analyze --data-file data/processed/embeddings.h5 \
-    --concepts dog cat elephant --consistency
+python src/cli.py analyze --data-file data/processed/embeddings.h5 --concepts dog cat elephant --consistency
 ```
