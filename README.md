@@ -15,8 +15,6 @@ python src/cli.py extract --append --batch
 # Eigene Wortliste
 python src/cli.py extract --word-file data/my_words.txt --batch
 
-# Einzelne Wörter direkt
-python src/cli.py extract --words dog cat tree --batch
 
 # Andere Quellsprache
 python src/cli.py extract --source-lang de --words Hund Katze --batch

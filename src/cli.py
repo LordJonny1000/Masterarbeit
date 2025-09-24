@@ -5,7 +5,7 @@ import sys
 from pathlib import Path
 import json
 from typing import List
-
+import pandas as pd
 from embedding_extractor import EmbeddingExtractor
 from data_manager import DataManager
 from analyzer import EmbeddingAnalyzer
@@ -15,7 +15,7 @@ def extract_embeddings(args):
     base_dir = Path(__file__).parent.parent
     default_embeddings_file = base_dir / "data" / "numberbatch-19.08.txt"
     default_output_file = base_dir / "data" / "processed" / "embeddings.h5"
-    default_word_file = base_dir / "data" / "concept_list.txt"
+    default_word_file = base_dir / "data" / "concept_list.csv"
 
     embeddings_file = Path(args.embeddings_file) if args.embeddings_file else default_embeddings_file
     output_file = Path(args.output) if args.output else default_output_file
@@ -28,16 +28,47 @@ def extract_embeddings(args):
     words = []
     if args.words:
         words = args.words
+        concept_properties = {word: {} for word in words}
     elif args.word_file:
-        with open(args.word_file, 'r') as f:
-            words = [line.strip() for line in f if line.strip() and not line.startswith('#')]
+        df = pd.read_csv(args.word_file)
+        words = df['concept'].tolist()
+        concept_properties = {}
+        for _, row in df.iterrows():
+            props = row.drop('concept').to_dict()
+            for key, value in props.items():
+                if pd.isna(value):
+                    props[key] = None
+                else:
+                    try:
+                        props[key] = int(value)
+                    except ValueError:
+                        try:
+                            props[key] = float(value)
+                        except ValueError:
+                            props[key] = value
+            concept_properties[row['concept']] = props
     else:
         if default_word_file.exists():
-            with open(default_word_file, 'r') as f:
-                words = [line.strip() for line in f if line.strip() and not line.startswith('#')]
+            df = pd.read_csv(default_word_file)
+            words = df['concept'].tolist()
+            concept_properties = {}
+            for _, row in df.iterrows():
+                props = row.drop('concept').to_dict()
+                for key, value in props.items():
+                    if pd.isna(value):
+                        props[key] = None
+                    else:
+                        try:
+                            props[key] = int(value)
+                        except ValueError:
+                            try:
+                                props[key] = float(value)
+                            except ValueError:
+                                props[key] = value
+                concept_properties[row['concept']] = props
         else:
             print(f"Error: No word list found at {default_word_file}")
-            print("Provide either --words or --word-file, or create data/concept_list.txt")
+            print("Provide either --words or --word-file, or create data/concept_list.csv")
             sys.exit(1)
 
     print(f"Extracting embeddings for {len(words)} concepts...")
@@ -45,12 +76,20 @@ def extract_embeddings(args):
     print(f"Output: {output_file}")
 
     if args.batch:
-        concepts = extractor.extract_concepts_batch(words, args.source_lang)
+        concepts = extractor.extract_concepts_batch(
+            words,
+            args.source_lang,
+            concept_properties=concept_properties
+        )
     else:
         concepts = {}
         for word in words:
             print(f"Processing: {word}")
-            concept = extractor.extract_concept(word, args.source_lang)
+            concept = extractor.extract_concept(
+                word,
+                args.source_lang,
+                properties=concept_properties.get(word, {})
+            )
             concepts[word] = concept
 
     manager = DataManager(output_file)
@@ -163,7 +202,7 @@ def main():
                                 help='Path to ConceptNet embeddings file (default: data/numberbatch-19.08.txt)')
     extract_parser.add_argument('--output', help='Output HDF5 file (default: data/processed/embeddings.h5)')
     extract_parser.add_argument('--words', nargs='+', help='List of words to extract (overrides word file)')
-    extract_parser.add_argument('--word-file', help='File containing words (default: data/concept_list.txt)')
+    extract_parser.add_argument('--word-file', help='File containing words (default: data/concept_list.csv)')
     extract_parser.add_argument('--source-lang', default='en', help='Source language (default: en)')
     extract_parser.add_argument('--append', action='store_true', help='Append to existing file')
     extract_parser.add_argument('--batch', action='store_true', help='Use batch extraction (faster)')
@@ -215,4 +254,72 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    # main()
+    manager = DataManager(Path("data/processed/embeddings.h5"))
+    print("Number of concepts: ", len(manager.list_concepts()))
+    concepts = manager.load_concepts()
+
+
+    from sklearn.neural_network import MLPClassifier
+    import numpy as np
+
+    X = np.empty((0, 300))
+    y = np.empty((300))
+
+
+
+    for concept in concepts:
+        embeddings = np.stack([x for x in concepts[concept].embeddings.values()])
+        X = np.vstack([X, embeddings])
+        labels = np.full(embeddings.shape[0], list(concepts[concept].properties.values())[0])
+
+        y = np.concatenate((y, labels)) # hier eigenschaft aussuchen
+
+    print("X: ", X.shape)
+    print("y: ", y.shape)
+
+
+
+
+
+
+    # probe = MLPClassifier(
+    #     hidden_layer_sizes=(100,),
+    #     activation='relu',
+    #     max_iter=500
+    # )
+    # probe.fit(X, y)
+
+
+
+
+# import numpy as np
+# result = concepts['king'].embeddings['en'] + concepts['woman'].embeddings['en'] - concepts['man'].embeddings['en']
+# queen = concepts['queen'].embeddings['en']
+# other_word = concepts['pride'].embeddings['en']
+#
+#
+# def euclidean_distance(vec1, vec2):
+#     return np.linalg.norm(vec1 - vec2)
+#
+# def cosine_similarity(vec1, vec2):
+#     return np.dot(vec1, vec2) / (np.linalg.norm(vec1) * np.linalg.norm(vec2))
+#
+# print("Queen:")
+# print(f"  Dotprodukt: {result.dot(queen)}")
+# print(f"  Euklidische Distanz: {euclidean_distance(result, queen)}")
+# print(f"  Kosinusähnlichkeit: {cosine_similarity(result, queen)}")
+#
+# print("\nTree:")
+# print(f"  Dotprodukt: {result.dot(other_word)}")
+# print(f"  Euklidische Distanz: {euclidean_distance(result, other_word)}")
+# print(f"  Kosinusähnlichkeit: {cosine_similarity(result, other_word)}")
+
+
+
+
+    # concept_id: str
+    # translations: Dict[str, str]
+    # embeddings: Dict[str, np.ndarray]
+    # properties: Dict[str, any]
+    # metadata: Dict[str, any]

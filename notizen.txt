@@ -18,3 +18,7 @@ Jina Embeddings v3: atryoshka Representation Learning for embedding truncation
 
 ConceptNet Embeddings Zitieren:
 Robyn Speer, Joshua Chin, and Catherine Havasi (2017). "ConceptNet 5.5: An Open Multilingual Graph of General Knowledge." In proceedings of AAAI 2017.
+
+
+all supersenses:
+{'noun.time', 'noun.possession', 'noun.plant', 'noun.cognition', 'noun.artifact', 'noun.state', 'noun.act', 'noun.shape', 'noun.person', 'noun.process', 'noun.quantity', 'noun.animal', 'noun.event', 'noun.substance', 'noun.food', 'noun.body', 'noun.feeling', 'noun.communication', 'noun.location', 'noun.attribute', 'noun.Tops', 'noun.phenomenon', 'noun.object', 'noun.group'}

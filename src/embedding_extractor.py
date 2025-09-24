@@ -1,6 +1,6 @@
 import numpy as np
 from pathlib import Path
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Any
 import requests
 import time
 import json
@@ -185,7 +185,8 @@ class EmbeddingExtractor:
         return None
 
     def extract_concept(self, word: str, source_lang: str = 'en',
-                        manual_translations: Optional[Dict[str, str]] = None) -> Concept:
+                        manual_translations: Optional[Dict[str, str]] = None,
+                        properties: Optional[Dict[str, Any]] = None) -> Concept:
         if manual_translations:
             translations = self.get_translations_manual(word, manual_translations)
         else:
@@ -201,13 +202,15 @@ class EmbeddingExtractor:
             concept_id=word,
             translations=translations,
             embeddings=embeddings,
-            properties={},
+            properties=properties,
             metadata={'source_lang': source_lang,
                       'extraction_method': 'manual' if manual_translations else 'auto'}
         )
 
     def extract_concepts_batch(self, words: List[str], source_lang: str = 'en',
-                               show_progress: bool = True) -> Dict[str, Concept]:
+                               show_progress: bool = True,
+                               concept_properties: Optional[Dict[str, Dict[str, Any]]] = None) -> Dict[
+        str, Concept]:
         concepts = {}
 
         all_translations = {}
@@ -250,7 +253,7 @@ class EmbeddingExtractor:
                 concept_id=word,
                 translations=all_translations.get(word, {}),
                 embeddings=embeddings_dict.get(word, {}),
-                properties={},
+                properties=concept_properties.get(word, {}) if concept_properties else {},
                 metadata={'source_lang': source_lang}
             )
 
