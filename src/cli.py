@@ -254,72 +254,53 @@ def main():
 
 
 if __name__ == "__main__":
-    # main()
-    manager = DataManager(Path("data/processed/embeddings.h5"))
-    print("Number of concepts: ", len(manager.list_concepts()))
-    concepts = manager.load_concepts()
-
-
-    from sklearn.neural_network import MLPClassifier
-    import numpy as np
-
-    X = np.empty((0, 300))
-    y = np.empty((300))
+    main()
 
 
 
-    for concept in concepts:
-        embeddings = np.stack([x for x in concepts[concept].embeddings.values()])
-        X = np.vstack([X, embeddings])
-        labels = np.full(embeddings.shape[0], list(concepts[concept].properties.values())[0])
-
-        y = np.concatenate((y, labels)) # hier eigenschaft aussuchen
-
-    print("X: ", X.shape)
-    print("y: ", y.shape)
-
-
-
-
-
-
-    # probe = MLPClassifier(
-    #     hidden_layer_sizes=(100,),
-    #     activation='relu',
-    #     max_iter=500
-    # )
-    # probe.fit(X, y)
-
-
-
-
-# import numpy as np
-# result = concepts['king'].embeddings['en'] + concepts['woman'].embeddings['en'] - concepts['man'].embeddings['en']
-# queen = concepts['queen'].embeddings['en']
-# other_word = concepts['pride'].embeddings['en']
-#
-#
-# def euclidean_distance(vec1, vec2):
-#     return np.linalg.norm(vec1 - vec2)
-#
-# def cosine_similarity(vec1, vec2):
-#     return np.dot(vec1, vec2) / (np.linalg.norm(vec1) * np.linalg.norm(vec2))
-#
-# print("Queen:")
-# print(f"  Dotprodukt: {result.dot(queen)}")
-# print(f"  Euklidische Distanz: {euclidean_distance(result, queen)}")
-# print(f"  Kosinusähnlichkeit: {cosine_similarity(result, queen)}")
-#
-# print("\nTree:")
-# print(f"  Dotprodukt: {result.dot(other_word)}")
-# print(f"  Euklidische Distanz: {euclidean_distance(result, other_word)}")
-# print(f"  Kosinusähnlichkeit: {cosine_similarity(result, other_word)}")
-
-
-
-
-    # concept_id: str
-    # translations: Dict[str, str]
-    # embeddings: Dict[str, np.ndarray]
-    # properties: Dict[str, any]
-    # metadata: Dict[str, any]
+    #
+    # manager = DataManager(Path("data/processed/embeddings.h5"))
+    # print("Number of concepts: ", len(manager.list_concepts()))
+    # concepts = manager.load_concepts()
+    #
+    # from sklearn.model_selection import train_test_split
+    # from sklearn.linear_model import LogisticRegression
+    # from sklearn.metrics import accuracy_score
+    # import numpy as np
+    # import copy as cp
+    #
+    #
+    #
+    #
+    # X = np.empty((0, 300))
+    # y = np.empty((0))
+    #
+    #
+    #
+    # for concept in concepts:
+    #     embeddings = np.stack([x for x in concepts[concept].embeddings.values()])
+    #     X = np.vstack([X, embeddings])
+    #     labels = np.full(embeddings.shape[0], list(concepts[concept].properties.values())[0]) #material,countable,living
+    #     y = np.concatenate((y, labels)) # hier eigenschaft aussuchen
+    #
+    #
+    # n_dims = X.shape[1]
+    #
+    # X_clone = cp.copy(X)
+    #
+    #
+    #
+    # for n in range(n_dims):
+    #
+    #     X = X_clone[:, n].reshape(-1, 1)
+    #
+    #
+    #     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+    #
+    #     clf = LogisticRegression()
+    #     clf.fit(X_train, y_train)
+    #
+    #     y_pred = clf.predict(X_test)
+    #     accuracy = accuracy_score(y_test, y_pred)
+    #
+    #     print(f"Accuracy only with dimension {n}: {accuracy:.2f}")
