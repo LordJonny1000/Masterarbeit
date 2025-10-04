@@ -5,6 +5,9 @@ ConceptNet Numberbatch 19.08 (static embeddings)
 
 FastText's 44-language aligned vectors
 
+
+
+
 pecialized geometric analysis frameworks. GeoMM (Geometry-aware Multilingual Embeddings) 
 
 vec2vec framework (lesen und zitieren)
@@ -19,6 +22,26 @@ Jina Embeddings v3: atryoshka Representation Learning for embedding truncation
 ConceptNet Embeddings Zitieren:
 Robyn Speer, Joshua Chin, and Catherine Havasi (2017). "ConceptNet 5.5: An Open Multilingual Graph of General Knowledge." In proceedings of AAAI 2017.
 
+Datensatz Quelle: https://pmc.ncbi.nlm.nih.gov/articles/PMC6538586/#MOESM2
+--------------------------------------
 
 all supersenses:
 {'noun.time', 'noun.possession', 'noun.plant', 'noun.cognition', 'noun.artifact', 'noun.state', 'noun.act', 'noun.shape', 'noun.person', 'noun.process', 'noun.quantity', 'noun.animal', 'noun.event', 'noun.substance', 'noun.food', 'noun.body', 'noun.feeling', 'noun.communication', 'noun.location', 'noun.attribute', 'noun.Tops', 'noun.phenomenon', 'noun.object', 'noun.group'}
+--------------------------------------
+"Strong Platonic Representation Hypothesis" = Embeddings konvergieren zu gleichen Eigenschaften
+Disentangling Linguistic Features stellt auf Seite 7 fest, dass sich mit 12 der Dimensionen immernoch 95% der Accurracy auf Probing Tasks erzielen lässt.
+--------------------------------------
+
+Experiment results:
+	metadata: number of concepts = 259, number of embeddings = 3865
+	results: material = 0.98, countable = 0.97, living = 0.99
+
+Dataset combination: 4682 non-polysemy words in Glasgow Norms of which are 4668 in both datasets
+--------------------------------------
+to include:
+	Ich habe static Embeddings verwendet während contextual embeddings state-of-the-art sind.
+	Conceptnet sind keine Word Embeddings weil sie von einem Knowledge Graph stammen. Also Node Embeddings.
+	für Konsistente cross-lingual Embeddings muss ich ein konservatives subsampling machen.	
+	Für Numberbatch mit Metriken und Benchmarks argumentieren	
+	
+
