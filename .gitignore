@@ -5,3 +5,4 @@ literatur/
 src/__pycache__/*
 .venv/
 Example_Master_Thesis/
+src/analyze.ipynb
