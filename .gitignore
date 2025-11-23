@@ -1,8 +1,5 @@
+bisherige_abgaben/
+.venv
+bisherige_abgaben/
+academic_writing_lecture_slides/
 data/
-notizen.txt
-*.txt
-literatur/
-src/__pycache__/*
-.venv/
-Example_Master_Thesis/
-src/analyze.ipynb
