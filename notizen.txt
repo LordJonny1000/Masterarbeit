@@ -1,0 +1,48 @@
+Quellen die Relevant sein könnten:
+
+SONAR
+While contextual models dominate performance benchmarks, static embeddings offer unique advantages for dimensional analysis.
+BGE-M3 (superior performance)
+ConceptNet Numberbatch 19.08 (static embeddings)
+
+FastText's 44-language aligned vectors
+
+pecialized geometric analysis frameworks. GeoMM (Geometry-aware Multilingual Embeddings) 
+
+vec2vec framework (lesen und zitieren)
+MMTEB (Massive Multilingual Text Embedding Benchmark) (lesen und zitieren)
+LINSPECTOR (lesen und zitieren)
+LDSP-10 (lesen und zitieren)
+
+Apple's Embedding Atlas (für Visualisierung)
+TensorFlow's Embedding Projector (for exploration)
+Jina Embeddings v3: atryoshka Representation Learning for embedding truncation
+
+
+Datensatz Quelle: https://pmc.ncbi.nlm.nih.gov/articles/PMC6538586/#MOESM2
+--------------------------------------
+Interesitng aspects to include
+
+"Strong Platonic Representation Hypothesis" = Embeddings konvergieren zu gleichen Eigenschaften
+Disentangling Linguistic Features stellt auf Seite 7 fest, dass sich mit 12 der Dimensionen immernoch 95% der Accurracy auf Probing Tasks erzielen lässt.
+--------------------------------------
+
+explorative experiment results:
+	metadata: number of concepts = 259, number of embeddings = 3865
+	results: material = 0.98, countable = 0.97, living = 0.99
+
+Dataset combination: 4682 non-polysemy words in Glasgow Norms of which are 4668 in both datasets
+model selection: SVR works best of these candidates Ridge, Lasso, ElasticNet, RandomForest, GradientBoosting, SVR, KNN, MLP
+--------------------------------------
+Decisions and assumptions to include:
+	Ich habe static Embeddings verwendet während contextual embeddings state-of-the-art sind.
+	Conceptnet Embeddings stammen nicht von Text sondern von einem knowledge graph.
+	Die Entscheidung für Numberbatch mit Metriken und Benchmarks rechtfertigen.	
+--------------------------------------
+Forschungsfrage:
+To what extent are psycholinguistic properties as operationalized in the Glasgow Norms encoded in dimensions of static word embeddings?
+Which dimensions of ConceptNet Numberbatch embeddings encode information about specific psycholinguistic properties (arousal, valence, dominance, concreteness, imageability, familiarity, age of acquisition, size, gender association)?	
+-------------------------------------
+Weiteres Vorgehen:
+
+
