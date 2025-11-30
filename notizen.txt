@@ -45,4 +45,124 @@ Which dimensions of ConceptNet Numberbatch embeddings encode information about s
 -------------------------------------
 Weiteres Vorgehen:
 
+Phase 1: Statistische Grundanalyse (für deinen Statistik-Betreuer wichtig!)
 
+Korrelationsanalyse
+
+Pearson/Spearman Korrelation zwischen einzelnen Embedding-Dimensionen und jeder Glasgow-Eigenschaft
+Identifikation welche Dimensionen stark mit welchen Eigenschaften korrelieren
+Visualisierung als Heatmap (300 Dimensionen × 9 Eigenschaften)
+
+
+Multikollinearitätsanalyse
+
+VIF (Variance Inflation Factor) für Embedding-Dimensionen
+Wichtig da CNC und IMAG stark korreliert sind (r=0.91 in Glasgow Norms)
+
+
+Principal Component Analysis
+
+Optional: PCA auf Embeddings zur Dimensionsreduktion
+Vergleich: Funktioniert PCA besser oder schlechter als original dimensions?
+
+
+
+Phase 2: Regression Models (Dein Hauptteil)
+Ich empfehle 4 komplementäre Algorithmen statt eines großen Vergleichs:
+
+Linear Regression (Baseline)
+
+Zeigt ob Properties linear in Dimensionen enkodiert sind
+Einfach interpretierbar durch Gewichte
+
+
+Ridge Regression
+
+Handhabt Multikollinearität zwischen Dimensionen
+L2-Regularisierung verhindert Overfitting
+
+
+Lasso Regression (Feature Selection)
+
+L1-Regularisierung → Sparse Lösung
+Identifiziert minimales Set an Dimensionen pro Property
+Dies ist dein Hauptbeitrag: Welche Dimensionen sind wirklich wichtig?
+
+
+Random Forest Regression
+
+Erfasst non-lineare Beziehungen
+Feature Importance → Alternative Sicht auf wichtige Dimensionen
+Upper Bound: Was ist maximal vorhersagbar?
+
+
+
+Wichtig: Diese 4 Modelle erzählen eine kohärente Geschichte:
+
+Linear Models → ist es linear?
+Lasso → welche Dimensionen?
+Random Forest → gibt es non-linearitäten?
+
+Phase 3: Dimension-wise Interpretation (Dein Hauptresult!)
+Für jede Glasgow-Eigenschaft:
+
+Top-k Dimensionen extrahieren (aus Lasso + Random Forest)
+Konsensus-Analyse: Welche Dimensionen werden von mehreren Methoden identifiziert?
+Visualisierung: Scatter plots von Top-Dimensionen vs. Property-Werten
+Cross-Property Analyse: Teilen verschiedene Properties dieselben Dimensionen?
+
+Beispiel-Analyse aus dem Dimension-wise Paper:
+
+Sie fanden dass Negation robust in spezifischen Dimensionen enkodiert ist
+Synonymy zeigte komplexere Patterns
+Du kannst analog zeigen: "Arousal ist hauptsächlich in Dimensionen 47, 128, 203 enkodiert"
+
+Phase 4: Evaluation Metrics
+
+Regression Metrics
+
+R² (Variance explained)
+RMSE (Root Mean Squared Error)
+MAE (Mean Absolute Error)
+Pearson/Spearman Korrelation zwischen Predictions und True Values
+
+
+Cross-Validation
+
+5-fold oder 10-fold CV
+Wichtig: Stratified sampling falls Properties skewed sind
+
+
+Baseline Comparison
+
+Compare gegen "Mean Prediction" baseline
+Evtl. gegen einfache Word2Vec/GloVe embeddings (ohne ConceptNet knowledge)
+
+
+
+Konkrete Experimente
+Experiment 1: Main Regression Analysis
+
+Für jede der 9 Glasgow Properties: Trainiere alle 4 Modelle
+Input: 300 Embedding Dimensionen
+Output: Predicted Property Value
+Datensplit: 80% train, 20% test (oder CV)
+
+Experiment 2: Dimension Importance Analysis
+
+Extrahiere aus Lasso: Welche Dimensionen haben non-zero weights?
+Extrahiere aus Random Forest: Feature Importance scores
+Kritische Frage: Sind die wichtigen Dimensionen konsistent über Methods?
+
+Experiment 3: Cross-Property Analysis
+
+Sind Dimensionen die AROU vorhersagen auch wichtig für VAL?
+Gibt es spezialisierte vs. generelle Dimensionen?
+
+Experiment 4: Knowledge Enhancement Evaluation (Optional aber stark!)
+Vergleiche ConceptNet Numberbatch gegen:
+
+Standard Word2Vec
+Standard GloVe
+
+Hypothese: Knowledge-enhanced embeddings sollten psycholinguistische Properties besser enkodieren als rein distributionale embeddings!
